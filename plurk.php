@@ -28,11 +28,14 @@ function do_post_plurk($post_id)
 	    get_option('plurk_token_key'),
 	    get_option('plurk_token_secret'));
 
-    $plurk->callAPI('/APP/Timeline/plurkAdd', array(
+    $ret = $plurk->callAPI('/APP/Timeline/plurkAdd', array(
 		'content' => "$url ({$post->post_title})",
 		'qualifier' => ':',
 		'limited_to' => '[3143486]',
 		));
+
+    $ret = json_decode($ret, true);
+    add_post_meta($post_id, 'plurk-post-id', $ret['plurk_id'], true);
 }
 
 add_action('publish_post', 'do_post_plurk');
