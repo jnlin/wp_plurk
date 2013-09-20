@@ -17,7 +17,7 @@ require __DIR__ . '/plurkAPI.php';
 function do_post_plurk($post_id)
 {
     if (!('publish' == $_POST['post_status'] and 'publish' != $_POST['original_post_status'])) {
-//	return;
+	return;
     }
 
     $post = get_post($post_id);
@@ -31,7 +31,6 @@ function do_post_plurk($post_id)
     $ret = $plurk->callAPI('/APP/Timeline/plurkAdd', array(
 		'content' => "$url ({$post->post_title})",
 		'qualifier' => ':',
-		'limited_to' => '[3143486]',
 		));
 
     add_post_meta($post_id, 'plurk-post-id', $ret->plurk_id, true);
