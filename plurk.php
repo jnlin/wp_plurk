@@ -20,6 +20,11 @@ function do_post_plurk($post_id)
 	return;
     }
 
+    if (!get_option('plurk_consumer_key') or !get_option('plurk_consumer_secret') or 
+	    !get_option('plurk_token_key') or get_option('plurk_token_secret')) {
+	return;
+    }
+
     $post = get_post($post_id);
     $url = get_permalink($post_id);
 
