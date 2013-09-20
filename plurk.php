@@ -40,7 +40,33 @@ function do_post_plurk($post_id)
 add_action('publish_post', 'do_post_plurk');
 add_action('admin_menu', 'plurk_option_page');
 add_action('admin_init', 'plurk_register_settings' );
+add_filter('the_content','plurk_show_posts');
 
+function plurk_show_posts($content = '')
+{
+    global $post;
+    if (!is_single()) {
+	return $content;
+    }
+
+    $id = get_post_meta($post->ID, 'plurk-post-id');
+
+    if (is_array($id)) {
+	$id = $id[0];
+    }
+
+    if (!$id or intval($id) <= 0) {
+	return $content;
+    }
+
+    $pid = base_convert($id, 10, 36);
+
+    $plurk_url = 'http://www.plurk.com/m/p/' . $pid;
+
+    $html = '<iframe style="border-width: 0px; max-width:99%; min-width: 70%; height: 300px; display:block; margin-top: 20px; margin-bottom: 20px" src="' . $plurk_url . '"></iframe>';
+
+    return $content . $html;
+}
 
 function your_plugin_settings_link($links) { 
     $settings_link = '<a href="options-general.php?page=wp_plurk/plurk.php">' . __('Settings') . '</a>'; 
