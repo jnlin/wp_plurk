@@ -21,7 +21,7 @@ function do_post_plurk($post_id)
     }
 
     if (!get_option('plurk_consumer_key') or !get_option('plurk_consumer_secret') or 
-	    !get_option('plurk_token_key') or get_option('plurk_token_secret')) {
+	    !get_option('plurk_token_key') or !get_option('plurk_token_secret')) {
 	return;
     }
 
