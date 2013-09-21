@@ -138,7 +138,7 @@ function plurk_settings_page()
 {
     ?>
     <div class="wrap">
-    <h2>API Key and Secret</h2>
+    <h2>Plurk: API Key and Secret</h2>
 
     <p>Please read <a href="https://github.com/jnlin/wp_plurk/blob/master/README.md">https://github.com/jnlin/wp_plurk/blob/master/README.md</a> to get your API key and secret.</p>
     
