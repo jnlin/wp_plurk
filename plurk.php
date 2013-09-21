@@ -25,6 +25,10 @@ function do_post_plurk($post_id)
 	return;
     }
 
+    if (isset($_POST['plurk-do-send']) and '1' != $_POST['plurk-do-send']) {
+	return;
+    }
+
     $post = get_post($post_id);
     $url = get_permalink($post_id);
 
@@ -87,7 +91,10 @@ function plurk_add_meta_box($post)
 
     $pid = base_convert($id, 10, 36);
     ?>
-	<label>Plurk URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>"></label>
+	<ul>
+	<li><label>URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>" size="7"></label></li>
+	<li><label><input type="checkbox" name="plurk-do-send" value="1" checked="checked"> Send Plurk while publishing the post</label></li>
+	</ul>
 
 <?php
 
