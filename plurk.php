@@ -69,11 +69,10 @@ function plurk_save_postdata($post_id)
 
     $id = base_convert($_POST['plurk-post-id'], 36, 10);
 
-    error_log($_POST['plurk-post-id']);
-    error_log($id);
-
     if (intval($id) > 0) {
-	 update_post_meta($post_id, 'plurk-post-id', $id);
+	update_post_meta($post_id, 'plurk-post-id', $id);
+    } else {
+	delete_post_meta($post_id, 'plurk-post-id');
     }
 
     return $post_id;
