@@ -86,7 +86,7 @@ function plurk_show_posts($content = '')
 
     } else { 
 	$plurk_url = 'http://www.plurk.com/p/' . $pid;
-	$html = '<h4><a href="' . $plurk_url . '" target="_blank">噗浪上的回應</a></h4><ul class="response" style="max-height: 250px; overflow-y: scroll">';
+	$html = '<h4>噗浪上的回應 <a href="' . $plurk_url . '" target="_blank">網址</a></h4><ul class="response" style="max-height: 250px; overflow-y: scroll">';
 
 	$i = 0;
 	foreach ($responses as $res) {
@@ -126,6 +126,7 @@ function plurk_register_settings()
     register_setting('plurk-settings-group', 'plurk_consumer_secret');
     register_setting('plurk-settings-group', 'plurk_token_key');
     register_setting('plurk-settings-group', 'plurk_token_secret');
+    register_setting('plurk-settings-group', 'plurk_use_iframe');
 }
 
 function plurk_option_page()
