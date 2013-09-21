@@ -44,7 +44,7 @@ function do_post_plurk($post_id)
 add_action('publish_post', 'do_post_plurk');
 add_action('admin_menu', 'plurk_option_page');
 add_action('admin_init', 'plurk_register_settings' );
-add_filter('the_content','plurk_show_posts');
+add_filter('the_content','plurk_show_posts', 999998);
 
 function plurk_show_posts($content = '')
 {
