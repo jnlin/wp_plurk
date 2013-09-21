@@ -170,6 +170,10 @@ function plurk_settings_page()
     <th scope="row">Token Secret</th>
     <td><input type="text" name="plurk_token_secret" value="<?= htmlspecialchars(get_option('plurk_token_secret')) ?>" style='width:600px;'></td>
     </tr>
+    <tr valign="top">
+    <th scope="row">Use IFrame to show Plurks</th>
+    <td><label><input type="radio" name="plurk_use_iframe" value="1"<?= get_option('plurk_use_iframe') ? ' checked="checked"' : '' ?>> Yes</label> <label><input type="radio" name="plurk_use_iframe" value="0"<?= !get_option('plurk_use_iframe') ? ' checked="checked"' : '' ?>> No</label></td>
+    </tr>
 
     </table>
 
