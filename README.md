@@ -15,5 +15,11 @@ wp_plurk - 發表文章後同步到噗浪
   ![api](https://raw.github.com/jnlin/wp_plurk/master/images/api.png)
 3. 依序按下 "Get request token", "Open Authorization URL", "Get Access Token"
   ![key](https://raw.github.com/jnlin/wp_plurk/master/images/key.png)
+  1. 按下 "Open Authorization URL" 之後，會出現授權畫面，選擇 Yes
+  ![auth](https://raw.github.com/jnlin/wp_plurk/master/images/auth.png)
+  2. 接著會出現授權碼（六位數字），將它複製起來
+  ![authcode](https://raw.github.com/jnlin/wp_plurk/master/images/authcode.png)
+  3. 接著回到 test console，按下 "Get Access Token"，並輸入剛剛的授權碼
+  ![doauth](https://raw.github.com/jnlin/wp_plurk/master/images/doauth.png)
 4. 接著把 Consumer Key, Consumer Secret, Token Key, Token Secret 複製到 Plurk Plugin 設定頁面，存檔後即可開始使用
   ![plugin](https://raw.github.com/jnlin/wp_plurk/master/images/plugin.png)
