@@ -43,8 +43,55 @@ function do_post_plurk($post_id)
 
 add_action('publish_post', 'do_post_plurk');
 add_action('admin_menu', 'plurk_option_page');
-add_action('admin_init', 'plurk_register_settings' );
+add_action('admin_init', 'plurk_register_settings');
+add_action('do_meta_boxes', 'plurk_meta_boxes');
 add_filter('the_content','plurk_show_posts', 999998);
+add_action('save_post', 'plurk_save_postdata');
+
+function plurk_save_postdata($post_id)
+{
+    if (!isset($_POST['plurk_meta_box_nonce'])) {
+	return $post_id;
+    }
+
+    $nonce = $_POST['plurk_meta_box_nonce'];
+    if (!wp_verify_nonce($nonce, 'plurk_meta_box')) {
+	return $post_id;
+    }
+
+    if (defined('DOING_AUTOSAVE') and DOING_AUTOSAVE) {
+	return $post_id;
+    }
+
+    $id = base_convert($_POST['plurk-post-id'], 36, 10);
+
+    error_log($_POST['plurk-post-id']);
+    error_log($id);
+
+    if (intval($id) > 0) {
+	 update_post_meta($post_id, 'plurk-post-id', $id);
+    }
+
+    return $post_id;
+}
+
+function plurk_meta_boxes()
+{
+    add_meta_box('plurk_meta_box', 'Plurk Settings', 'plurk_add_meta_box', 'post', 'side');
+}
+
+function plurk_add_meta_box($post)
+{
+    wp_nonce_field('plurk_meta_box', 'plurk_meta_box_nonce');
+    $id = get_post_meta($post->ID, 'plurk-post-id', true);
+
+    $pid = base_convert($id, 10, 36);
+    ?>
+	<label>Plurk URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>"></label>
+
+<?php
+
+}
 
 function plurk_show_posts($content = '')
 {
