@@ -89,7 +89,7 @@ function plurk_add_meta_box($post)
     wp_nonce_field('plurk_meta_box', 'plurk_meta_box_nonce');
     $id = get_post_meta($post->ID, 'plurk-post-id', true);
 
-    $pid = base_convert($id, 10, 36);
+    $pid = intval($id) > 0 ? base_convert($id, 10, 36) : '';
     ?>
 	<ul>
 	<li><label>URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>" size="7"></label></li>
