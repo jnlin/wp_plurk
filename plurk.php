@@ -63,11 +63,50 @@ function plurk_show_posts($content = '')
 	return $content;
     }
 
+    $plurk = new PlurkAPI(get_option('plurk_consumer_key'),
+	    get_option('plurk_consumer_secret'),
+	    get_option('plurk_token_key'),
+	    get_option('plurk_token_secret'));
+
+    $ret = $plurk->callAPI('/APP/Responses/get', array(
+		'plurk_id' => $id,
+		));
+
+    // to array
+    $ret = json_decode(json_encode($ret), true);
+
+    $responses = $ret['responses'];
+    $friends = $ret['friends'];
+
     $pid = base_convert($id, 10, 36);
 
-    $plurk_url = 'http://www.plurk.com/m/p/' . $pid;
+    if (get_option('plurk_use_iframe')) {
+	$plurk_url = 'http://www.plurk.com/m/p/' . $pid;
+	$html = '<iframe style="border-width: 0px; max-width:99%; min-width: 70%; height: 300px; display:block; margin-top: 20px; margin-bottom: 20px" src="' . $plurk_url . '"></iframe>';
 
-    $html = '<iframe style="border-width: 0px; max-width:99%; min-width: 70%; height: 300px; display:block; margin-top: 20px; margin-bottom: 20px" src="' . $plurk_url . '"></iframe>';
+    } else { 
+	$plurk_url = 'http://www.plurk.com/p/' . $pid;
+	$html = '<h4><a href="' . $plurk_url . '" target="_blank">噗浪上的回應</a></h4><ul class="response" style="max-height: 250px; overflow-y: scroll">';
+
+	$i = 0;
+	foreach ($responses as $res) {
+	    $nickname = $friends[$res['user_id']]['nick_name'];
+	    $displayname = $friends[$res['user_id']]['display_name'];
+	    $avatar_id = $friends[$res['user_id']]['avatar'];
+	    $avatar = sprintf('<div class="avatar"><a href="http://www.plurk.com/%s"><img src="https://avatars.plurk.com/%s-medium%s.gif"></a></div>', htmlspecialchars($nickname), htmlspecialchars($res['user_id']), htmlspecialchars($avatar_id));
+
+	    $user = sprintf('<div class="user"><a class="user-nick" href="http://www.plurk.com/%s">%s</a> <span class="response-time" style="display:inline">%s</span></div>', htmlspecialchars($nickname), htmlspecialchars($displayname), htmlspecialchars($res['posted']));
+
+	    $message = sprintf('<div class="message" style="padding-left: 53px"><span class="content">%s</span></div>', $res['content']);
+
+	    $li = '<li class="' . (0 == $i % 2 ? 'odd' : 'even') . '"><article>' . $avatar . $user . $message . '<div class="clear"></div></article></li>';
+
+	    $html .= $li;
+	    $i++;
+	}
+
+	$html .= '</ul>';
+    }
 
     return $content . $html;
 }
