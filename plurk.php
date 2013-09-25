@@ -92,7 +92,7 @@ function plurk_add_meta_box($post)
     ?>
 	<ul>
 	<li><label>URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>" size="7"></label></li>
-	<li><label><input type="checkbox" name="plurk-do-send" value="1" checked="checked"> Send Plurk while publishing the post</label></li>
+	<li>Send Plurk while publishing the post: <label><input type="radio" name="plurk-do-send" value="1" checked="checked"> Yes</label><label><input type="radio" name="plurk-do-send" value="0"> No</label></li>
 	</ul>
 
 <?php
