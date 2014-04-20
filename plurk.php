@@ -249,7 +249,7 @@ function plurk_settings_page()
     </tr>
     <tr valign="top">
     <th scope="row">Prepending Tags</th>
-    <td>Use comoa to split each tags: <input type="text" name="plurk_tags" value="<?= get_option('plurk_tags') ?>"></td>
+    <td>Use comma to split each tags: <input type="text" name="plurk_tags" value="<?= get_option('plurk_tags') ?>"></td>
     </tr>
 
     </table>
