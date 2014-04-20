@@ -76,7 +76,7 @@ function plurk_save_postdata($post_id)
 
     if (intval($id) > 0) {
 	update_post_meta($post_id, 'plurk-post-id', $id);
-    } elseif (0 < strlen($_POST['plurk-old-id']) {
+    } elseif (0 < strlen($_POST['plurk-old-id'])) {
 	delete_post_meta($post_id, 'plurk-post-id');
     }
 
