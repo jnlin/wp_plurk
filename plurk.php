@@ -29,8 +29,13 @@ function do_post_plurk($post_id)
 	return;
     }
 
+    $tag = $_POST['plurk-tag'];
     $post = get_post($post_id);
     $url = get_permalink($post_id);
+    $content = "$url ({$post->post_title})";
+    if ($tag) {
+        $content = "[$tag] " . $content;
+    }
 
     $plurk = new PlurkAPI(get_option('plurk_consumer_key'),
 	    get_option('plurk_consumer_secret'),
@@ -38,7 +43,7 @@ function do_post_plurk($post_id)
 	    get_option('plurk_token_secret'));
 
     $ret = $plurk->callAPI('/APP/Timeline/plurkAdd', array(
-		'content' => "$url ({$post->post_title})",
+		'content' => $content,
 		'qualifier' => ':',
 		));
 
@@ -87,11 +92,25 @@ function plurk_add_meta_box($post)
 {
     wp_nonce_field('plurk_meta_box', 'plurk_meta_box_nonce');
     $id = get_post_meta($post->ID, 'plurk-post-id', true);
+    $tags = get_option('plurk_tags');
+    if ($tags) {
+        $tags = explode(',', $tags);
+    } else {
+        $tags = [];
+    }
 
     $pid = intval($id) > 0 ? base_convert($id, 10, 36) : '';
     ?>
 	<ul>
 	<li><label>URL: http://www.plurk.com/p/<input type="text" id="plurk-post-id" name="plurk-post-id" value="<?= esc_attr($pid) ?>" size="7"></label></li>
+        <li>Tag: 
+        <select name="plurk-tag">
+        <?php foreach ($tags as $tag) { ?>
+        <option value="<?= htmlspecialchars($tag) ?>"><?= htmlspecialchars($tag) ?></option>
+        <?php } ?>
+        <option value="">(None)</option>
+        </select>
+        </li>
 	<li>Send Plurk while publishing the post: <label><input type="radio" name="plurk-do-send" value="1" checked="checked"> Yes</label><label><input type="radio" name="plurk-do-send" value="0"> No</label></li>
         <input type="hidden" name="plurk-old-id" value="<?= esc_attr($pid) ?>">
 	</ul>
@@ -227,6 +246,10 @@ function plurk_settings_page()
     <tr valign="top">
     <th scope="row">Use IFrame to show Plurks</th>
     <td><label><input type="radio" name="plurk_use_iframe" value="1"<?= get_option('plurk_use_iframe') ? ' checked="checked"' : '' ?>> Yes</label> <label><input type="radio" name="plurk_use_iframe" value="0"<?= !get_option('plurk_use_iframe') ? ' checked="checked"' : '' ?>> No</label></td>
+    </tr>
+    <tr valign="top">
+    <th scope="row">Prepending Tags</th>
+    <td>Use comoa to split each tags: <input type="text" name="plurk_tags" value="<?= get_option('plurk_tags') ?>"></td>
     </tr>
 
     </table>
