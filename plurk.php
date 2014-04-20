@@ -200,6 +200,7 @@ function plurk_register_settings()
     register_setting('plurk-settings-group', 'plurk_token_key');
     register_setting('plurk-settings-group', 'plurk_token_secret');
     register_setting('plurk-settings-group', 'plurk_use_iframe');
+    register_setting('plurk-settings-group', 'plurk_tags');
 }
 
 function plurk_option_page()
